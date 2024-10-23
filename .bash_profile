@@ -2,6 +2,10 @@
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
+# Changes the ulimit limits.
+ulimit -Sn 4096      # Increase open files.
+ulimit -Sl unlimited # Increase max locked memory.
+
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="$PATH:$HOME/.local/bin"
 
