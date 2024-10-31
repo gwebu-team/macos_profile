@@ -1677,6 +1677,7 @@
             };
             "\U002D" = ("insertText:", "\U00B7"); /* Compose, FULL STOP, HYPHEN-MINUS: MIDDLE DOT */
             "\U002E" = ("insertText:", "\U2026"); /* Compose, FULL STOP, FULL STOP: HORIZONTAL ELLIPSIS */
+            "\U002F" = ("insertText:", "\U22F0"); /* Compose, FULL STOP, REVERSE SOLIDUS: UP RIGHT DIAGONAL ELLIPSIS */
             "\U003C" = ("insertText:", "\U2039"); /* Compose, FULL STOP, LESS-THAN SIGN: SINGLE LEFT-POINTING ANGLE QUOTATION MARK */
             "\U003D" = ("insertText:", "\U2022"); /* Compose, FULL STOP, EQUALS SIGN: BULLET */
             "\U003E" = ("insertText:", "\U203A"); /* Compose, FULL STOP, GREATER-THAN SIGN: SINGLE RIGHT-POINTING ANGLE QUOTATION MARK */
@@ -1700,6 +1701,7 @@
             "\U0058" = ("insertText:", "\U1E8A"); /* Compose, FULL STOP, LATIN CAPITAL LETTER X: LATIN CAPITAL LETTER X WITH DOT ABOVE */
             "\U0059" = ("insertText:", "\U1E8E"); /* Compose, FULL STOP, LATIN CAPITAL LETTER Y: LATIN CAPITAL LETTER Y WITH DOT ABOVE */
             "\U005A" = ("insertText:", "\U017B"); /* Compose, FULL STOP, LATIN CAPITAL LETTER Z: LATIN CAPITAL LETTER Z WITH DOT ABOVE */
+            "\U005C" = ("insertText:", "\U22F1"); /* Compose, FULL STOP, SOLIDUS: DOWN RIGHT DIAGONAL ELLIPSIS */
             "\U005E" = ("insertText:", "\U00B7"); /* Compose, FULL STOP, CIRCUMFLEX ACCENT: MIDDLE DOT */
             "\U0061" = ("insertText:", "\U0227"); /* Compose, FULL STOP, LATIN SMALL LETTER A: LATIN SMALL LETTER A WITH DOT ABOVE */
             "\U0062" = ("insertText:", "\U1E03"); /* Compose, FULL STOP, LATIN SMALL LETTER B: LATIN SMALL LETTER B WITH DOT ABOVE */
@@ -1721,6 +1723,7 @@
             "\U0078" = ("insertText:", "\U1E8B"); /* Compose, FULL STOP, LATIN SMALL LETTER X: LATIN SMALL LETTER X WITH DOT ABOVE */
             "\U0079" = ("insertText:", "\U1E8F"); /* Compose, FULL STOP, LATIN SMALL LETTER Y: LATIN SMALL LETTER Y WITH DOT ABOVE */
             "\U007A" = ("insertText:", "\U017C"); /* Compose, FULL STOP, LATIN SMALL LETTER Z: LATIN SMALL LETTER Z WITH DOT ABOVE */
+            "\U007C" = ("insertText:", "\U22EE"); /* Compose, FULL STOP, VERTICAL LINE: VERTICAL ELLIPSIS */
             "\U00B4" = {
                 "\U0053" = ("insertText:", "\U1E64"); /* Compose, FULL STOP, ACUTE ACCENT, LATIN CAPITAL LETTER S: LATIN CAPITAL LETTER S WITH ACUTE AND DOT ABOVE */
                 "\U0073" = ("insertText:", "\U1E65"); /* Compose, FULL STOP, ACUTE ACCENT, LATIN SMALL LETTER S: LATIN SMALL LETTER S WITH ACUTE AND DOT ABOVE */
