@@ -20,9 +20,10 @@ Notes
     - Go into `iTerm2` preferences and go to the `keys` tab.
     - Hit the `+` button at the bottom to add a new key.
     - Press your Insert/Help key to set that as your shortcut key, then select Send Escape Sequence as your action, and set [2~ as your escape sequence.
+    - To make Ctrl+Left and Ctrl+Right jump words - add with escape sequence + `[1;5D` for back and `[1;5C` for forward.
 - [Fixing iterm2's LC_CTYPE](https://blog.remibergsma.com/2012/07/10/setting-locales-correctly-on-mac-osx-terminal-application/).
     - The setting is located in Preferences | Settings | Advanced -> `character encoding` = `en_US.UTF-8`.
-
+    - If this is no longer exists (latest iTerm2) the value for `LC_CTYPE` in Advanced should be `en_US.UTF-8` instead.
 
 
 ## Install brew
@@ -63,6 +64,10 @@ Edit `~/.bash_profile` to be something like this:
 
 ```shell
 export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# Changes the ulimit limits.
+ulimit -Sn 4096      # Increase open files.
+ulimit -Sl unlimited # Increase max locked memory.
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="$PATH:$HOME/.local/bin"
@@ -166,10 +171,10 @@ and configure git.
 
 
 
-## Git and gpg signing
+## Git and GPG signing
 
 ```shell
-brew install git gnupg tig gitgui git-gui gnupg pinentry-mac
+brew install git gnupg tig gitui git-gui gnupg pinentry-mac
 echo "pinentry-program $(brew --prefix)/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
 ```
 and configure git.
@@ -251,14 +256,15 @@ brew install in2csv
 in2csv percent.xls | vd
 ```
 
-See also: [Podman Machine Setup for x86_64 on Apple Silicon (run Docker amd64 containers on M1,M2,M3)](https://medium.com/@guillem.riera/podman-machine-setup-for-x86-64-on-apple-silicon-run-docker-amd64-containers-on-m1-m2-m3-bf02bea38598).
+See also: [Podman Machine Setup for x86_64 on Apple Silicon (run Docker amd64 containers on M1,M2,M3)](https://medium.com/@guillem.riera/podman-machine-setup-for-x86-64-on-apple-silicon-run-docker-amd64-containers-on-m1-m2-m3-bf02bea38598). This fix might not be needed for the latest versions of MacOSX. Install only if needed.
 
-
+**Note**: In PodMan Desktop click on the "Docker Compatibility" in the bottom of the application window. This will enable PodMan to act as docker, and will prevent issues down the road.
 
 ## Google cloud SDK
 
 ```shell
 brew install --cask google-cloud-sdk
+brew install kind
 ```
 
 ### for bash users
@@ -278,6 +284,12 @@ source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 
 ```shell
 source "$(brew --prefix)/share/google-cloud-sdk/path.fish.inc"
+```
+
+Then run:
+
+```shell
+gcloud components install gke-gcloud-auth-plugin kubectl pkg kustomize skaffold terraform-tools minikube
 ```
 
 
@@ -310,6 +322,8 @@ NB: Close the terminal and open a new one to "activate" the change. Maybe `hash 
 
 ## SSH Control Masters
 
+In order to speed up SSH connectivity, we use SSH Control Masters, that will cache active SSH connections and will reuse them for later SSH tunnels.
+
 Add to your `.bash_profile` the following useful aliases:
 
 ```shell
@@ -336,6 +350,7 @@ Host *
     ControlMaster auto
     # on = forever, 900 = 15 minutes
     ControlPersist 1800
+    ForwardAgent yes
 ```
 
 You can of course customize individual hosts adding a section above the `Host *` one like this:
