@@ -20,10 +20,12 @@ Notes
     - Go into `iTerm2` preferences and go to the `keys` tab.
     - Hit the `+` button at the bottom to add a new key.
     - Press your Insert/Help key to set that as your shortcut key, then select Send Escape Sequence as your action, and set [2~ as your escape sequence.
-    - To make Ctrl+Left and Ctrl+Right jump words - add with escape sequence + `[1;5D` for back and `[1;5C` for forward.
+- To make `Ctrl+Left` and `Ctrl+Right` jump words - add with escape sequence + `[1;5D` for back and `[1;5C` for forward.
+- To make `Shift+Ctrl+C` and `Shift+Ctrl+V` work as in Linux - add `Ctrl+Shift+C/V` to `Copy Selection or Send ^C` and `Paste or send ^V`
 - [Fixing iterm2's LC_CTYPE](https://blog.remibergsma.com/2012/07/10/setting-locales-correctly-on-mac-osx-terminal-application/).
     - The setting is located in Preferences | Settings | Advanced -> `character encoding` = `en_US.UTF-8`.
     - If this is no longer exists (latest iTerm2) the value for `LC_CTYPE` in Advanced should be `en_US.UTF-8` instead.
+
 
 
 ## Install brew
@@ -37,6 +39,7 @@ chmod a+x ./brew_install.sh
 ./brew_install.sh
 rm ./brew_install.sh
 ```
+
 
 
 ## Change "±§" and "`~" keys
@@ -126,10 +129,60 @@ close your terminal and reopen it.
 
 
 
+## Fish setup
+
+**Note**: You need to do all steps for the bash setup above
+
+```shell
+brew install fish
+grep "$HOMEBREW_PREFIX/bin/fish" /etc/shells || (echo "$BREW/bin/fish" | sudo tee -a /etc/shells)
+sudo chsh -s "$HOMEBREW_PREFIX/bin/fish" "$USER"
+```
+
+Restart your terminal application and it should login with Fish
+
+
+### Fanciness
+
+For the fancy prompt you shout install [Oh My Fish](https://github.com/oh-my-fish/oh-my-fish)
+```shell
+curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
+```
+
+Then install one of the packages, say BobTheFish
+```shell
+omf install bobthefish
+```
+
+Exit your terminal and start it again. You should see BobTheFish prompt style.
+
+**NOTE**: For your terminal application (iTerm2), download and select one of the [PowerLine fonts](https://github.com/powerline/fonts). This looks good [Roboto Mono](https://github.com/powerline/fonts/blob/master/RobotoMono/Roboto%20Mono%20Medium%20for%20Powerline.ttf). 
+
+
+### Path setup
+
+In order to have installed applications from Brew and GCloud, add the following to `.config/fish/config.fish`.
+
+```
+set -gx PATH /opt/homebrew/bin $PATH
+
+# Google gcloud.
+set gcloud_path (brew --prefix)/share/google-cloud-sdk/path.fish.inc
+if test -r $gcloud_path
+    source $gcloud_path
+end
+```
+
+
+
 ## WireGuard setup
+
+WireGuard will be used to access remotely testing/development Linux system.
 
 
 ### TUI (console) method:
+
+**NOTE**: use GUI mode if possible.
 
 This has the added benefit `host node001` works.
 
@@ -159,15 +212,13 @@ To fix this you can `sudo networksetup -setsearchdomains Wi-Fi sf.gwebu.com` for
 
 Download the app from [vaardan/wireguard-macos-app](https://github.com/vaardan/wireguard-macos-app/releases). Add an empty tunnel, copy-paste the config, add name, save, activate.
 
+**NOTE**: You will receive additional VPN configuration file from your manager.
 
+**NOTE**: WireGuard App might not show in the Tray, so system restart may be needed.
 
-## Git and GPG signing
-
-```shell
-brew install git gnupg tig gitgui git-gui gnupg pinentry-mac
-echo "pinentry-program $(brew --prefix)/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
-```
-and configure git.
+Once you see System Tray icon, click on it and select `Manage Tunnels`. Select the tunnel you have just added.
+On the lower right corner of the window, click on the `Edit` button. Once the Tunnel configuration window opens, check `On-Demand` for all ethernet interfaces you have.
+This will automatically start the VPN when you try to access the remote network.
 
 
 
@@ -195,6 +246,7 @@ sudo bclm persist
 ```
 
 
+
 ## Other useful software
 
 ```shell
@@ -202,6 +254,8 @@ brew install bash bash-completion coreutils htop hiddenbar keepassxc make midnig
 ```
 
 NB: Hidden bar requires a *hack* to work `sudo xattr -r -d com.apple.quarantine "/Applications/Hidden Bar.app"`
+
+**NOTE**: You may need to restart the computer before Hidden bar works.
 
 
 
@@ -222,13 +276,13 @@ And follow the instructions on https://github.com/tombonez/noTunes:
 
 ## Working with containers
 
+
 ### Dock settings
 
 ```shell
 defaults write com.apple.Dock showhidden -bool YES  # https://apple.stackexchange.com/q/9048/522215
 defaults write -g NSWindowShouldDragOnGesture true
 ```
-
 
 
 ### Install and use base apps
@@ -260,36 +314,29 @@ See also: [Podman Machine Setup for x86_64 on Apple Silicon (run Docker amd64 co
 
 **Note**: In PodMan Desktop click on the "Docker Compatibility" in the bottom of the application window. This will enable PodMan to act as docker, and will prevent issues down the road.
 
+
+
 ## Google cloud SDK
 
 ```shell
 brew install --cask google-cloud-sdk
+gcloud components install gke-gcloud-auth-plugin kubectl pkg kustomize skaffold terraform-tools minikube
 brew install kind
 ```
 
-### for bash users
+
+### for bash/fish users
 
 ```shell
 source "$(brew --prefix)/share/google-cloud-sdk/path.bash.inc"
 ```
+
 
 ### for zsh users
 
 ```shell
 source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
 source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
-```
-
-### for fish users
-
-```shell
-source "$(brew --prefix)/share/google-cloud-sdk/path.fish.inc"
-```
-
-Then run:
-
-```shell
-gcloud components install gke-gcloud-auth-plugin kubectl pkg kustomize skaffold terraform-tools minikube
 ```
 
 
@@ -377,6 +424,14 @@ virt-manager -c "qemu:///session" --no-fork
 
 
 
+## Install go
+
+```shell
+brew install go
+```
+
+
+
 ## Various
 
 - nice ls alternative: `brew install eza; eza -l`
@@ -397,40 +452,11 @@ For more info:
 ```shell
 brew info openssl
 ```
-Certificate (ca-ipa001.sf.gwebu.pem):
-```
------BEGIN CERTIFICATE-----
-MIIEjjCCAvagAwIBAgIBATANBgkqhkiG9w0BAQsFADA3MRUwEwYDVQQKDAxTRi5H
-V0VCVS5DT00xHjAcBgNVBAMMFUNlcnRpZmljYXRlIEF1dGhvcml0eTAeFw0yMzEx
-MTUxMTUzMTdaFw00MzExMTUxMTUzMTdaMDcxFTATBgNVBAoMDFNGLkdXRUJVLkNP
-TTEeMBwGA1UEAwwVQ2VydGlmaWNhdGUgQXV0aG9yaXR5MIIBojANBgkqhkiG9w0B
-AQEFAAOCAY8AMIIBigKCAYEAsn4unfW9rGV3FkVhIhWfZLDDdq8wAHQVpxxm9BnO
-k4rtpIZJ0eWFdhSmI3jq0raMbmgwNJtoS1ZP6yhDqOvn5UeF//u3uLD8220OwPEd
-K0U3P1cMkpBirDxVq2W3+WWLaejQqKqYSaE3wkhiJ0HoqKLtBW5zGSoGhmMLAoYs
-jQ2yNvcdBQbs5mNtainp4uAQQAqSMYxfoV+QCKe5iHQzdRAWhWtEXbUELVQ9zMr5
-5SUl5NcT7JiGDuJP6HJoYY7yLu4bTP5vHylSPhAvQkt7Yk9Xiby6KDhgUewUoabO
-8WhE+wjI+KKw5aY562Jw57JQeiv68+BKnvLK9vxs2B5c3axV/FfJ53vTkOLAzHM0
-PW7UfEtElm1SoMkbmzjR3rHi/4x3Rkz1VRNd89UPytCNTdSRgDMtPLEq7KXF3+rf
-W40pLKcePC0nW3d9/74UeGlX3iw9SBB9BjRXuUlWaeJgeHIUwnezSI3FqlUthjNX
-X9rKNiLOUBTWStKjBKEDUZZ/AgMBAAGjgaQwgaEwHwYDVR0jBBgwFoAUAA2nTcgz
-puGK99EfIwb5ieWVUm4wDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAcYw
-HQYDVR0OBBYEFAANp03IM6bhivfRHyMG+YnllVJuMD4GCCsGAQUFBwEBBDIwMDAu
-BggrBgEFBQcwAYYiaHR0cDovL2lwYS1jYS5zZi5nd2VidS5jb20vY2Evb2NzcDAN
-BgkqhkiG9w0BAQsFAAOCAYEAagHg9wqNFZ+WPOAyPnZPDl8KE65BAhjMA06cohcx
-nmnNPKR7J4Yo7cGnFKWLzMqLXqUVoKBwFhv3Yme81zoAGPl1QY9rgIvkWOl8ugbv
-lDdijS9kL7WbOofL2WDxzlN4tyimcG7Wcmu/ZAx4C9mWzvBUydbozLjMNRumpAQg
-ZcPb28+APQYeeg1v9jC0l040/eG4QAhe3HvZzNGPwI2DwXE8A8z3h3YJ7dgu37my
-8HihlZP8IERNsIHNtmtE9itnE2igq058jcgFeFTthXz8jfRrNCzLlKCX20YcSWnN
-Ca0Qe2nejoPxI85yFePFD+mJV5n4D0ohH9/q5QMWOjm8ACje5wF28ytos1eIzhs5
-0a31cwXC4XpDhNCBxwCFbDhoXg8jMNmqkWr79gh5gXkGOJjv8r5ObWVX2WU55J+d
-codyOTNEwp1qATI7wTdL3fpgL8TI5LEWMW587Km+DB0Ge1YHtJoO5PhXQuYNhpDD
-6us9nVQx38ZtbeowOvKjx8Lk
------END CERTIFICATE-----
-```
-See also [Adding the IPA CA for SOF DC](https://flyrlabs.atlassian.net/wiki/spaces/Traditiona/pages/4151083365/Sofia+DC#Adding-the-IPA-CA-for-SOF-DC)
+
 
 
 ## Update packages regularly
+
 
 ### Upgrade brew installed packages
 
@@ -439,11 +465,13 @@ brew update; brew upgrade -g; brew cleanup
 # brew doctor # Optional
 ```
 
+
 ### Upgrading pipx installed pacakges
 
 ```shell
 pipx upgrade-all
 ```
+
 
 ### Automated update using a script
 
@@ -484,3 +512,9 @@ You can add `~/bin` to your `PATH` or just run it as `~/bin/MAC_UP`.
 
 In google chrome you can create "an app" for the google calendar, Gmail, Jura…
 To do so select the three dots on top right ⋮ -> Cast, Save, and Share -> Install Page as App…
+
+
+
+## Misc scripts
+
+There are some scripts you may find useful in the [bin](bin) directory here.
