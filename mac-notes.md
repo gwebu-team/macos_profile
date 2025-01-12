@@ -59,7 +59,7 @@ First install sane bash 5:
 ```shell
 eval "$(/opt/homebrew/bin/brew shellenv)"
 brew install bash
-grep "$HOMEBREW_PREFIX/bin/bash" /etc/shells || (echo "$BREW/bin/bash" | sudo tee -a /etc/shells)
+grep "$HOMEBREW_PREFIX/bin/bash" /etc/shells || (echo "$HOMEBREW_PREFIX/bin/bash" | sudo tee -a /etc/shells)
 sudo chsh -s "$HOMEBREW_PREFIX/bin/bash" "$USER"
 ```
 
