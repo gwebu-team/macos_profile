@@ -25,6 +25,7 @@ Notes
 - [Fixing iterm2's LC_CTYPE](https://blog.remibergsma.com/2012/07/10/setting-locales-correctly-on-mac-osx-terminal-application/).
     - The setting is located in Preferences | Settings | Advanced -> `character encoding` = `en_US.UTF-8`.
     - If this is no longer exists (latest iTerm2) the value for `LC_CTYPE` in Advanced should be `en_US.UTF-8` instead.
+- [Switching Latin-Cyrillic fast every time (Caps-Lock)](https://stackoverflow.com/a/70911250/1136400), `defaults write -g ApplePressAndHoldEnabled -bool false` for a quick fix.
 
 
 
