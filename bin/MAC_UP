@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -xe
+
+brew update
+brew upgrade -g
+brew cleanup
+if ! brew doctor; then
+    echo "The doctor said take a look... $?"
+fi
+
+if command -v pipx &>/dev/null; then
+    pipx upgrade-all
+fi
+
+if command -v uv &>/dev/null; then
+    uv tool upgrade --all
+fi
+
+if command -v gcloud &>/dev/null; then
+    gcloud components update
+fi

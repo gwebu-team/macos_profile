@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# Step 1: List all network services
+network_services=()
+while read -r service; do
+    network_services+=("$service")
+done < <(networksetup -listallnetworkservices | tail -n +2)
+
+echo "Network services: ${network_services[@]}"
+
+# Step 2: Iterate through the network services to find the active one
+active_services=()
+for service in "${network_services[@]}"; do
+  ip=$(networksetup -getinfo "$service" | grep '^IP address' | head -n 1 | awk '{print $3}')
+  if [[ "$ip" != "none" && "$ip" != "" ]]; then
+    active_services+=("$service")
+  fi
+done
+
+# Step 3: Check if an active service was found
+if [ "${#active_services[@]}" -le 0 ]; then
+  echo "No active network service found."
+  exit 1
+fi
+
+echo "Active network services: ${active_services[@]}"
+
+# Step 4: Add a search domain to the active network services
+search_domain="sf.gwebu.com"
+
+for active_service in "${active_services[@]}"; do
+  sudo networksetup -setsearchdomains "$active_service" "$search_domain"
+done
+
+# Verify the configuration for each active service
+for active_service in "${active_services[@]}"; do
+  configured_domains=$(networksetup -getsearchdomains "$active_service")
+  echo "Configured search domains for $active_service: $configured_domains"
+done

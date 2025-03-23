@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -xe
+
+python="${python:-python}"
+
+"$python" -m pip --disable-pip-version-check list --outdated --format=json \
+    | "$python" -c "import json, sys; print(' '.join([x['name'] for x in json.load(sys.stdin)]))" \
+    | grep -v '^pip$' \
+    | xargs -n1 "$python" -m pip install -U
