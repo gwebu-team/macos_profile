@@ -31,6 +31,12 @@ function cleanup {
 
 trap cleanup EXIT
 
+function banner {
+    local f='='; local s="$f$f$f $1 "; local needed=$(( 79 - ${#s} ))
+    if [ $needed -gt 0 ]; then s="$s$(printf "%${needed}s" | tr ' ' "$f" )"; fi
+    printf "%s\n" "$s" # can start with dashes
+}
+
 USAGE="Usage:
    $(basename "$0") SERVER [PORT/443]"
 
@@ -40,8 +46,8 @@ ${USAGE}"}"
 
 PORT="${2:-443}"
 
-echo "HOST=$HOST, PORT=$PORT."
+banner "HOST=$HOST, PORT=$PORT."
 
 cleanup
 
-echo OK
+banner OK
