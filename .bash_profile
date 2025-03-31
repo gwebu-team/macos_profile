@@ -72,3 +72,21 @@ export FZF_DEFAULT_OPTS="--history-size=$HISTSIZE"
 # curl
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 . "$HOME/.cargo/env"
+
+# nnn
+n() {
+    # Save the last working directory from nnn
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    # Launch nnn with any arguments passed
+    nnn -d "$@"
+
+    # If the temp file exists, cd to the saved directory
+    if [ -f "$NNN_TMPFILE" ]; then
+        . "$NNN_TMPFILE"
+        rm -f "$NNN_TMPFILE"
+    fi
+}
+
+# Drop ._foo files from tar - https://superuser.com/a/66874/153604
+export COPYFILE_DISABLE=true
