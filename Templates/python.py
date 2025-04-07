@@ -1,8 +1,14 @@
+#!/usr/bin/env uv run
 #!/usr/bin/env python3
 # Add -sPE to previous line for more security in system-wide installation.
-# -*- coding: utf-8 -*-
 
 """Template for ..."""
+
+# /// script
+# dependencies = [
+#   "textual",
+# ]
+# ///
 
 import sys
 from typing import Optional, Union
