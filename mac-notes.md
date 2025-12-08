@@ -376,14 +376,14 @@ Add to your `.bash_profile` the following useful aliases:
 
 ```shell
 # ssh control masters
-alias ssh_controlmasters_ls='(cd ~/.ssh/controlmasters/; ls -A 2>/dev/null || echo "-- No control masters --")'
-alias ssh_controlmasters_check='(cd ~/.ssh/controlmasters/; [ "$(ls -A)" ] && for i in *; do echo -n "$i: "; ssh -O check "${i%:*}" -p "${i##*:}"; done)'
-alias ssh_controlmasters_stop='(cd ~/.ssh/controlmasters/; [ "$(ls -A)" ] && for i in *; do echo -n "$i: "; ssh -O stop "${i%:*}" -p "${i##*:}"; done)'
+alias ssh_controlmasters_ls='(cd ~/.ssh/c/; ls -A 2>/dev/null || echo "-- No control masters --")'
+alias ssh_controlmasters_check='(cd ~/.ssh/c/; [ "$(ls -A)" ] && for i in *; do echo -n "$i: "; ssh -O check "${i%:*}" -p "${i##*:}"; done)'
+alias ssh_controlmasters_stop='(cd ~/.ssh/c/; [ "$(ls -A)" ] && for i in *; do echo -n "$i: "; ssh -O stop "${i%:*}" -p "${i##*:}"; done)'
 ```
 
 Setup your config:
 ```shell
-mkdir -p ~/.ssh/controlmasters
+mkdir -p ~/.ssh/c
 chmod -R go=- ~/.ssh/
 nano ~/.ssh/config
 ```
@@ -394,7 +394,7 @@ Host *
     # Use the following line to just ssh node007.sf.gwebu.com with different user.
     User your_dc_user
     #  %h, %p, and %r (or alternatively %C)
-    ControlPath ~/.ssh/controlmasters/%r@%h:%p
+    ControlPath ~/.ssh/c/%r@%h:%p
     ControlMaster auto
     # on = forever, 900 = 15 minutes
     ControlPersist 1800

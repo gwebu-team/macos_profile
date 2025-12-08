@@ -57,9 +57,9 @@ fi
 alias ncdu='ncdu --exclude ~/Library/CloudStorage/ --exclude ~/Library/Containers/'
 
 # ssh control masters
-alias ssh_controlmasters_ls='(cd ~/.ssh/controlmasters/; ls -A 2>/dev/null || echo "-- No control masters --")'
-alias ssh_controlmasters_check='(cd ~/.ssh/controlmasters/; [ "$(ls -A)" ] && for i in *; do echo -n "$i: "; ssh -O check "${i%:*}" -p "${i##*:}"; done)'
-alias ssh_controlmasters_stop='(cd ~/.ssh/controlmasters/; [ "$(ls -A)" ] && for i in *; do echo -n "$i: "; ssh -O stop "${i%:*}" -p "${i##*:}"; done)'
+alias ssh_controlmasters_ls='(cd ~/.ssh/c/; ls -A 2>/dev/null || echo "-- No control masters --")'
+alias ssh_controlmasters_check='(cd ~/.ssh/c/; [ "$(ls -A)" ] && for i in *; do echo -n "$i: "; ssh -O check "${i%:*}" -p "${i##*:}"; done)'
+alias ssh_controlmasters_stop='(cd ~/.ssh/c/; [ "$(ls -A)" ] && for i in *; do echo -n "$i: "; ssh -O stop "${i%:*}" -p "${i##*:}"; done)'
 
 # python virtual env
 # export VIRTUAL_ENV_DISABLE_PROMPT=yes
