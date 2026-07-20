@@ -7,7 +7,11 @@ ulimit -Sn 4096      # Increase open files.
 ulimit -Sl unlimited # Increase max locked memory.
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$HOMEBREW_PREFIX/opt/findutils/libexec/gnubin:$PATH:$HOME/.local/bin:$HOME/bin"
+# All commands have been installed with the prefix "g".
+# If you need to use these commands with their normal names, you
+# can add a "gnubin" directory to your PATH from your bashrc like:
+export PATH="$HOMEBREW_PREFIX/opt/grep/libexec/gnubin:$PATH"
 
 [[ -r "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh" ]] \
     && . "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh"
@@ -56,11 +60,6 @@ fi
 # ncdu
 alias ncdu='ncdu --exclude ~/Library/CloudStorage/ --exclude ~/Library/Containers/'
 
-# ssh control masters
-alias ssh_controlmasters_ls='(cd ~/.ssh/c/; ls -A 2>/dev/null || echo "-- No control masters --")'
-alias ssh_controlmasters_check='(cd ~/.ssh/c/; [ "$(ls -A)" ] && for i in *; do echo -n "$i: "; ssh -O check "${i%:*}" -p "${i##*:}"; done)'
-alias ssh_controlmasters_stop='(cd ~/.ssh/c/; [ "$(ls -A)" ] && for i in *; do echo -n "$i: "; ssh -O stop "${i%:*}" -p "${i##*:}"; done)'
-
 # python virtual env
 # export VIRTUAL_ENV_DISABLE_PROMPT=yes
 
@@ -71,7 +70,6 @@ export FZF_DEFAULT_OPTS="--history-size=$HISTSIZE"
 
 # curl
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
-. "$HOME/.cargo/env"
 
 # nnn
 n() {
@@ -90,3 +88,22 @@ n() {
 
 # Drop ._foo files from tar - https://superuser.com/a/66874/153604
 export COPYFILE_DISABLE=true
+if tar --help | grep xattr > /dev/null 2>&1; then
+    export TAR_WRITER_OPTIONS=--no-xattrs
+fi
+
+# cargo
+. "$HOME/.cargo/env"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/opt/homebrew/share/google-cloud-sdk/path.bash.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.bash.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.bash.inc'; fi
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/doncho.gunchev/.lmstudio/bin"
+# End of LM Studio CLI section
+
+# LLVM
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
